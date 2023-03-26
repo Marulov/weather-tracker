@@ -16,14 +16,14 @@ public class Weather {
     private String id;
     private String city;
     private String country;
-    private String temperature;
+    private Integer temperature;
     private LocalDateTime updatedTime;
     private LocalDateTime responseLocalTime;
 
     public Weather() {
     }
 
-    public Weather(String id, String city, String country, String temperature, LocalDateTime updatedTime, LocalDateTime responseLocalTime) {
+    public Weather(String id, String city, String country, Integer temperature, LocalDateTime updatedTime, LocalDateTime responseLocalTime) {
         this.id = id;
         this.city = city;
         this.country = country;
@@ -32,7 +32,7 @@ public class Weather {
         this.responseLocalTime = responseLocalTime;
     }
 
-    public Weather(String city, String country, String temperature, LocalDateTime updatedTime, LocalDateTime responseLocalTime) {
+    public Weather(String city, String country, Integer temperature, LocalDateTime updatedTime, LocalDateTime responseLocalTime) {
         this.id = "";
         this.city = city;
         this.country = country;
@@ -53,7 +53,7 @@ public class Weather {
         return country;
     }
 
-    public String getTemperature() {
+    public Integer getTemperature() {
         return temperature;
     }
 
