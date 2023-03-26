@@ -15,6 +15,7 @@ public class Weather {
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
     private String city;
+    private String requestedCity;
     private String country;
     private Integer temperature;
     private LocalDateTime updatedTime;
@@ -23,18 +24,20 @@ public class Weather {
     public Weather() {
     }
 
-    public Weather(String id, String city, String country, Integer temperature, LocalDateTime updatedTime, LocalDateTime responseLocalTime) {
+    public Weather(String id, String city, String requestedCity, String country, Integer temperature, LocalDateTime updatedTime, LocalDateTime responseLocalTime) {
         this.id = id;
         this.city = city;
+        this.requestedCity = requestedCity;
         this.country = country;
         this.temperature = temperature;
         this.updatedTime = updatedTime;
         this.responseLocalTime = responseLocalTime;
     }
 
-    public Weather(String city, String country, Integer temperature, LocalDateTime updatedTime, LocalDateTime responseLocalTime) {
+    public Weather(String city, String requestedCity, String country, Integer temperature, LocalDateTime updatedTime, LocalDateTime responseLocalTime) {
         this.id = "";
         this.city = city;
+        this.requestedCity = requestedCity;
         this.country = country;
         this.temperature = temperature;
         this.updatedTime = updatedTime;
@@ -47,6 +50,10 @@ public class Weather {
 
     public String getCity() {
         return city;
+    }
+
+    public String getRequestedCity() {
+        return requestedCity;
     }
 
     public String getCountry() {

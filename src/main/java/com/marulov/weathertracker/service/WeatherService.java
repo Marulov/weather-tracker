@@ -18,7 +18,7 @@ import java.util.Optional;
 @Service
 public class WeatherService {
 
-    private static final String API_URL = "https://api.weatherstack.com/current?access_key=dfdb902176aed1f14faed3bb938d83de&query=";
+    private static final String API_URL = "http://api.weatherstack.com/current?access_key=dfdb902176aed1f14faed3bb938d83de&query=";
     private final WeatherRepository weatherRepository;
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -29,7 +29,7 @@ public class WeatherService {
     }
 
     public WeatherDto getWeatherByCity(String city) {
-        Optional<Weather> weatherOptional = weatherRepository.findFirstByCityContainingOrderByUpdatedTimeDesc(city);
+        Optional<Weather> weatherOptional = weatherRepository.findFirstByRequestedCityOrderByUpdatedTimeDesc(city);
 
         if (!weatherOptional.isPresent()) {
             return WeatherDto.convert(getWeatherFromWeatherStackApi(city));
@@ -43,17 +43,18 @@ public class WeatherService {
 
         try {
             WeatherResponse weatherResponse = objectMapper.readValue(responseEntity.getBody(), WeatherResponse.class);
-            return saveWeather(weatherResponse);
+            return saveWeather(city, weatherResponse);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private Weather saveWeather(WeatherResponse weatherResponse) {
+    private Weather saveWeather(String city, WeatherResponse weatherResponse) {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
         Weather weather = new Weather(
                 weatherResponse.location().name(),
+                city,
                 weatherResponse.location().country(),
                 weatherResponse.current().temperature(),
                 LocalDateTime.now(),
