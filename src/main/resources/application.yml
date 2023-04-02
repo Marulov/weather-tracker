@@ -5,3 +5,8 @@ spring:
   h2:
     console:
       enabled: true
+  config:
+    import: optional:file:.env[.properties]
+
+weather-stack:
+  access-key: ${ACCESS_KEY:default}
