@@ -1,7 +1,6 @@
 package com.marulov.weathertracker.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.marulov.weathertracker.dto.WeatherDto;
 import com.marulov.weathertracker.dto.WeatherResponse;
@@ -31,11 +30,11 @@ public class WeatherService {
     public WeatherDto getWeatherByCity(String city) {
         Optional<Weather> weatherOptional = weatherRepository.findFirstByRequestedCityOrderByUpdatedTimeDesc(city);
 
-        if (!weatherOptional.isPresent()) {
-            return WeatherDto.convert(getWeatherFromWeatherStackApi(city));
-        }
-
-        return WeatherDto.convert(weatherOptional.get());
+        return weatherOptional.map(weather -> {
+            if (weather.getUpdatedTime().isBefore(LocalDateTime.now().minusMinutes(30)))
+                return WeatherDto.convert(getWeatherFromWeatherStackApi(city));
+            return WeatherDto.convert(weather);
+        }).orElseGet(() -> WeatherDto.convert(getWeatherFromWeatherStackApi(city)));
     }
 
     public Weather getWeatherFromWeatherStackApi(String city) {

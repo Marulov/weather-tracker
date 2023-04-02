@@ -9,6 +9,7 @@ public record WeatherDto(
         String country,
         Integer temperature,
         LocalDateTime updatedTime) {
+
     public static WeatherDto convert(Weather from) {
         return new WeatherDto(from.getCity(), from.getCountry(), from.getTemperature(), from.getUpdatedTime());
     }
