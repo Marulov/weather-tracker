@@ -14,10 +14,11 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
+import static com.marulov.weathertracker.config.WeatherStackConfigProperties.ACCESS_KEY;
+
 @Service
 public class WeatherService {
 
-    private static final String API_URL = "http://api.weatherstack.com/current?access_key=dfdb902176aed1f14faed3bb938d83de&query=";
     private final WeatherRepository weatherRepository;
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -38,7 +39,7 @@ public class WeatherService {
     }
 
     public Weather getWeatherFromWeatherStackApi(String city) {
-        ResponseEntity<String> responseEntity = restTemplate.getForEntity(API_URL + city, String.class);
+        ResponseEntity<String> responseEntity = restTemplate.getForEntity(getWeatherStackApiUrl(city), String.class);
 
         try {
             WeatherResponse weatherResponse = objectMapper.readValue(responseEntity.getBody(), WeatherResponse.class);
@@ -60,5 +61,9 @@ public class WeatherService {
                 LocalDateTime.parse(weatherResponse.location().localTime(), dateTimeFormatter));
 
         return weatherRepository.save(weather);
+    }
+
+    private String getWeatherStackApiUrl(String city) {
+        return String.format("http://api.weatherstack.com/current?access_key=%s&query=%s", ACCESS_KEY, city);
     }
 }
