@@ -2,6 +2,7 @@ package com.marulov.weathertracker.controller;
 
 import com.marulov.weathertracker.dto.WeatherDto;
 import com.marulov.weathertracker.service.WeatherService;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +20,7 @@ public class WeatherController {
     }
 
     @GetMapping("/{city}")
-    public ResponseEntity<WeatherDto> getWeatherByCity(@PathVariable("city") String city) {
+    public ResponseEntity<WeatherDto> getWeatherByCity(@PathVariable("city") @NotBlank String city) {
         return ResponseEntity.ok(weatherService.getWeatherByCity(city));
     }
 }
