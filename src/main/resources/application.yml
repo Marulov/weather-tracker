@@ -10,3 +10,11 @@ spring:
 
 weather-stack:
   access-key: ${ACCESS_KEY:default}
+
+resilience4j:
+  ratelimiter:
+    instances:
+      user-rate-limit:
+        limitForPeriod: 10
+        limitRefreshPeriod: 1m
+        timeoutDuration: 10s

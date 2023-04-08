@@ -52,11 +52,10 @@ public class GeneralExceptionAdvice extends ResponseEntityExceptionHandler {
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<String> handle(RuntimeException exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-
     }
 
     @ExceptionHandler(RequestNotPermitted.class)
-    public ResponseEntity<String> handle(RequestNotPermitted exception) {
+    public ResponseEntity<String> handle() {
         return new ResponseEntity<>("Rate limit exceeded. Please try your request again later!", HttpStatus.TOO_MANY_REQUESTS);
     }
 }

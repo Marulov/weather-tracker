@@ -3,6 +3,7 @@ package com.marulov.weathertracker.controller;
 import com.marulov.weathertracker.controller.validation.CityNameConstraint;
 import com.marulov.weathertracker.dto.WeatherDto;
 import com.marulov.weathertracker.service.WeatherService;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -23,6 +24,7 @@ public class WeatherController {
     }
 
     @GetMapping("/{city}")
+    @RateLimiter(name = "user-rate-limit")
     public ResponseEntity<WeatherDto> getWeatherByCity(@PathVariable("city") @CityNameConstraint @NotBlank String city) {
         return ResponseEntity.ok(weatherService.getWeatherByCity(city));
     }
