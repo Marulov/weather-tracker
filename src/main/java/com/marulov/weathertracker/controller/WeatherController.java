@@ -1,5 +1,6 @@
 package com.marulov.weathertracker.controller;
 
+import com.marulov.weathertracker.controller.validation.CityNameConstraint;
 import com.marulov.weathertracker.dto.WeatherDto;
 import com.marulov.weathertracker.service.WeatherService;
 import jakarta.validation.constraints.NotBlank;
@@ -22,7 +23,7 @@ public class WeatherController {
     }
 
     @GetMapping("/{city}")
-    public ResponseEntity<WeatherDto> getWeatherByCity(@PathVariable("city") @NotBlank String city) {
+    public ResponseEntity<WeatherDto> getWeatherByCity(@PathVariable("city") @CityNameConstraint @NotBlank String city) {
         return ResponseEntity.ok(weatherService.getWeatherByCity(city));
     }
 }

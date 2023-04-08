@@ -1,0 +1,18 @@
+version: '3.9'
+
+services:
+  app:
+    image: 'weather-tracker:latest'
+    build:
+      context: .
+    ports:
+      - "9595-9597:8080"
+    deploy:
+      mode: replicated
+      replicas: 3
+    networks:
+      - weather-tracker-network
+    environment:
+      - "ACCESS_KEY=${ACCESS_KEY}"
+networks:
+  weather-tracker-network:
